@@ -11,18 +11,56 @@
       margin: 50px;
     }
 
-    a.button {
+    .dropdown {
       display: inline-block;
+      position: relative;
+    }
+
+    .dropdown-button {
       padding: 15px 30px;
       background-color: #007bff;
       color: white;
-      text-decoration: none;
-      border-radius: 8px;
       font-size: 1.2em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
     }
 
-    a.button:hover {
+    .dropdown-button:hover {
       background-color: #0056b3;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 200px;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      z-index: 1;
+      text-align: left;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 12px 16px;
+      color: #333;
+      text-decoration: none;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #eee;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    h1 {
+      margin-bottom: 40px;
     }
   </style>
 </head>
@@ -31,9 +69,14 @@
   <h1>Tools</h1>
   <p>Choose a tool to begin:</p>
 
-  <a href="speedtest.html" class="button">Internet Speed Test</a>
-  <a href="Dump.html" class="button">Data Dump</a>
-  <a href="gag.html" class="button">Ip Grabber</a>
+  <div class="dropdown">
+    <button class="dropdown-button">Open Tool Menu</button>
+    <div class="dropdown-content">
+      <a href="speedtest.html">Internet Speed Test</a>
+      <a href="Dump.html">Data Dump</a>
+      <a href="gag.html">IP Grabber</a>
+    </div>
+  </div>
 
 </body>
 </html>
