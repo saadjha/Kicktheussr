@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>File Upload</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+
+    .upload-box {
+      border: 2px dashed #ccc;
+      padding: 30px;
+      width: 80%;
+      margin: 0 auto 20px;
+      border-radius: 10px;
+    }
+
+    input[type="file"] {
+      margin-top: 15px;
+    }
+
+    #progressBar {
+      width: 80%;
+      height: 25px;
+      background-color: #eee;
+      border-radius: 5px;
+      margin: 20px auto;
+      overflow: hidden;
+    }
+
+    #progressBar div {
+      height: 100%;
+      width: 0%;
+      background-color: #4caf50;
+      text-align: center;
+      line-height: 25px;
+      color: white;
+    }
+
+    .file-info {
+      font-size: 1.1em;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Upload a File</h1>
+
+  <div class="upload-box">
+    <input type="file" id="fileInput" />
+    <br />
+    <button onclick="uploadFile()">Upload</button>
+  </div>
+
+  <div id="progressBar"><div></div></div>
+  <div class="file-info" id="fileInfo"></div>
+
+  <br />
+  <button onclick="window.location.href='index.html'">Back to Main Page</button>
+
+  <script>
+    function uploadFile() {
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files[0];
+      const progressBar = document.getElementById('progressBar').firstElementChild;
+      const fileInfo = document.getElementById('fileInfo');
+
+      if (!file) {
+        alert("Please select a file first.");
+        return;
+      }
+
+      // Display file info
+      fileInfo.textContent = `Uploading: ${file.name} (${(file.size / 1e6).toFixed(2)} MB)`;
+
+      // Simulated upload progress (replace with real upload if needed)
+      let progress = 0;
+      const interval = setInterval(() => {
+        if (progress >= 100) {
+          clearInterval(interval);
+          fileInfo.textContent = `Upload complete: ${file.name} (${(file.size / 1e6).toFixed(2)} MB)`;
+        } else {
+          progress += 5 + Math.random() * 10;
+          progress = Math.min(progress, 100);
+          progressBar.style.width = progress + "%";
+          progressBar.textContent = Math.floor(progress) + "%";
+        }
+      }, 200);
+    }
+  </script>
+
+</body>
+</html>
