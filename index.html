@@ -20,11 +20,18 @@
       justify-content: space-between;
       align-items: center;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      flex-wrap: wrap;
     }
 
     header h1 {
       font-size: 1.8em;
       margin: 0;
+    }
+
+    .dropdowns {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
     .dropdown {
@@ -80,11 +87,40 @@
     main {
       text-align: center;
       margin-top: 80px;
+      position: relative;
     }
 
     main p {
       font-size: 1.2em;
       color: #555;
+    }
+
+    .icon-grid {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 50px;
+      flex-wrap: wrap;
+    }
+
+    .icon {
+      width: 100px;
+      height: 100px;
+      background-color: #ffffff;
+      border: 2px dashed #bbb;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      font-size: 1.5em;
+      cursor: pointer;
+      transition: transform 0.2s ease, background-color 0.3s;
+    }
+
+    .icon:hover {
+      transform: scale(1.05);
+      background-color: #e3f2fd;
     }
   </style>
 </head>
@@ -92,19 +128,57 @@
 
   <header>
     <h1>Tool Suite</h1>
-    <div class="dropdown">
-      <button class="dropdown-button">☰ Menu</button>
-      <div class="dropdown-content">
-        <a href="speedtest.html">📶 Internet Speed Test</a>
-        <a href="Dump.html">📂 Data Dump</a>
-        <a href="gag.html">🌐 IP Grabber</a>
-        <a href="autoclicker-download.html">🖱️ Auto Clicker Download</a>
+    <div class="dropdowns">
+      <div class="dropdown">
+        <button class="dropdown-button">☰ Menu</button>
+        <div class="dropdown-content">
+          <a href="speedtest.html">📶 Internet Speed Test</a>
+          <a href="Dump.html">📂 Data Dump</a>
+          <a href="gag.html">🌐 IP Grabber</a>
+          <a href="autoclicker-download.html">🖱️ Auto Clicker Download</a>
+        </div>
+      </div>
+      <!-- Blank Dropdowns -->
+      <div class="dropdown">
+        <button class="dropdown-button">▼ Menu 2</button>
+        <div class="dropdown-content">
+          <a href="#">Blank 1</a>
+          <a href="#">Blank 2</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropdown-button">▼ Menu 3</button>
+        <div class="dropdown-content">
+          <a href="#">Blank 1</a>
+          <a href="#">Blank 2</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropdown-button">▼ Menu 4</button>
+        <div class="dropdown-content">
+          <a href="#">Blank 1</a>
+          <a href="#">Blank 2</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropdown-button">▼ Menu 5</button>
+        <div class="dropdown-content">
+          <a href="#">Blank 1</a>
+          <a href="#">Blank 2</a>
+        </div>
       </div>
     </div>
   </header>
 
   <main>
     <p>Welcome! Use the menu above to access your tools.</p>
+    <div class="icon-grid">
+      <div class="icon">+</div>
+      <div class="icon">+</div>
+      <div class="icon">+</div>
+      <div class="icon">+</div>
+      <div class="icon">+</div>
+    </div>
   </main>
 
 </body>
