@@ -26,24 +26,12 @@
     header h1 {
       font-size: 1.8em;
       margin: 0;
-      flex: 1 1 auto;
-    }
-
-    #clock {
-      font-weight: 600;
-      font-size: 1.1em;
-      cursor: pointer;
-      user-select: none;
-      white-space: nowrap;
     }
 
     .dropdowns {
       display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
       gap: 10px;
-      margin: 20px 0 0 0;
-      width: 100%;
+      flex-wrap: wrap;
     }
 
     .dropdown {
@@ -96,6 +84,24 @@
       display: block;
     }
 
+    #clock {
+      text-align: right;
+      font-size: 1em;
+      margin-left: auto;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.15);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    #clock span {
+      display: block;
+      font-size: 0.85em;
+      color: #ddd;
+    }
+
     main {
       text-align: center;
       margin-top: 80px;
@@ -140,49 +146,50 @@
 
   <header>
     <h1>Tool Suite</h1>
-    <div id="clock" title="Click to toggle 12/24-hour format"></div>
+    <div class="dropdowns">
+      <div class="dropdown">
+        <button class="dropdown-button">☰ Menu</button>
+        <div class="dropdown-content">
+          <a href="#">Blank 1</a>
+          <a href="#">Blank 2</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropdown-button">▼ Miscellaneous Tools</button>
+        <div class="dropdown-content">
+          <a href="speedtest.html">📶 Internet Speed Test</a>
+          <a href="Dump.html">📂 Data Dump</a>
+          <a href="gag.html">🌐 IP Grabber</a>
+          <a href="autoclicker-download.html">🖱️ Auto Clicker Download</a>
+          <a href="network-tools.html">Network selection</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropdown-button">▼ Menu 3</button>
+        <div class="dropdown-content">
+          <a href="#">Blank 2</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropdown-button">▼ Menu 4</button>
+        <div class="dropdown-content">
+          <a href="#">Blank 1</a>
+          <a href="#">Blank 2</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropdown-button">▼ Menu 5</button>
+        <div class="dropdown-content">
+          <a href="#">Blank 1</a>
+          <a href="#">Blank 2</a>
+        </div>
+      </div>
+    </div>
+    <div id="clock" title="Click to toggle 12/24-hour format">
+      00:00:00
+      <span>Loading date...</span>
+    </div>
   </header>
-
-  <div class="dropdowns">
-    <div class="dropdown">
-      <button class="dropdown-button">☰ Menu</button>
-      <div class="dropdown-content">
-        <a href="#">Blank 1</a>
-        <a href="#">Blank 2</a>
-      </div>
-    </div>
-    <!-- Blank Dropdowns -->
-    <div class="dropdown">
-      <button class="dropdown-button">▼ Miscellaneous Tools</button>
-      <div class="dropdown-content">
-        <a href="speedtest.html">📶 Internet Speed Test</a>
-        <a href="Dump.html">📂 Data Dump</a>
-        <a href="gag.html">🌐 IP Grabber</a>
-        <a href="autoclicker-download.html">🖱️ Auto Clicker Download</a>
-        <a href="network-tools.html">Network selection</a>
-      </div>
-    </div>
-    <div class="dropdown">
-      <button class="dropdown-button">▼ Menu 3</button>
-      <div class="dropdown-content">
-        <a href="#">Blank 2</a>
-      </div>
-    </div>
-    <div class="dropdown">
-      <button class="dropdown-button">▼ Menu 4</button>
-      <div class="dropdown-content">
-        <a href="#">Blank 1</a>
-        <a href="#">Blank 2</a>
-      </div>
-    </div>
-    <div class="dropdown">
-      <button class="dropdown-button">▼ Menu 5</button>
-      <div class="dropdown-content">
-        <a href="#">Blank 1</a>
-        <a href="#">Blank 2</a>
-      </div>
-    </div>
-  </div>
 
   <main>
     <p>Welcome! Use the menu above to access your tools.</p>
@@ -196,27 +203,35 @@
   </main>
 
   <script>
-    const clock = document.getElementById('clock');
-    let use24Hour = false;
+    let is24Hour = true;
 
     function updateClock() {
       const now = new Date();
-      let hours = now.getHours();
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      const seconds = now.getSeconds().toString().padStart(2, '0');
-      let ampm = '';
+      const clock = document.getElementById('clock');
 
-      if (!use24Hour) {
-        ampm = hours >= 12 ? ' PM' : ' AM';
-        hours = hours % 12;
-        hours = hours ? hours : 12; // hour '0' should be '12'
+      let hours = now.getHours();
+      let suffix = '';
+      if (!is24Hour) {
+        suffix = hours >= 12 ? ' PM' : ' AM';
+        hours = hours % 12 || 12;
       }
 
-      clock.textContent = `${hours.toString().padStart(2, '0')}:${minutes}:${seconds}${ampm}`;
+      const h = String(hours).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+
+      const dateStr = now.toLocaleDateString(undefined, {
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+
+      clock.innerHTML = `${h}:${m}:${s}${suffix}<span>${dateStr}</span>`;
     }
 
-    clock.addEventListener('click', () => {
-      use24Hour = !use24Hour;
+    document.getElementById('clock').addEventListener('click', () => {
+      is24Hour = !is24Hour;
       updateClock();
     });
 
