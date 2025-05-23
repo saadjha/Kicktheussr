@@ -18,19 +18,17 @@
       color: white;
       padding: 20px 40px;
       display: flex;
-      justify-content: flex-start; /* dropdowns on left */
+      justify-content: space-between;
       align-items: center;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       flex-wrap: wrap;
-      position: relative; /* for absolute positioning of title */
+      position: relative;
     }
 
     header h1 {
       font-size: 1.8em;
       margin: 0;
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
+      margin-right: 40px;
       z-index: 1;
       white-space: nowrap;
     }
@@ -39,7 +37,10 @@
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
-      z-index: 2; /* above background but below header title */
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
     }
 
     .dropdown {
@@ -208,7 +209,6 @@
       <div class="icon">⬡</div>
       <div class="icon">⬡</div>
     </div>
-
   </main>
 
   <script>
