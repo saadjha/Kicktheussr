@@ -83,7 +83,7 @@
 
       try {
         // Free service provided by HackerTarget (rate-limited for public use)
-        const res = await fetch(`https://api.hackertarget.com/mtr/?q=${encodeURIComponent(target)}`);
+        const res = await fetch(`https://api.siterelic.com/mtr?q=${encodeURIComponent(target)}`);
         const text = await res.text();
 
         if (text.includes("error")) {
