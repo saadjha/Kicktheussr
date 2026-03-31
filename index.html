@@ -14,6 +14,17 @@
       padding: 0;
     }
 
+    /* Particle Canvas Styling */
+    #particleCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1; /* Keeps it behind all your tools */
+      pointer-events: none; /* Ensures you can still click things on top of it */
+    }
+
     header {
       background-color: #1e88e5;
       color: white;
@@ -154,6 +165,8 @@
 </head>
 <body>
 
+  <canvas id="particleCanvas"></canvas>
+
   <header>
     <h1>Tool Suite</h1>
     <div class="dropdowns">
@@ -179,7 +192,6 @@
           <a href="https://github.com/kgsensei/TypingcomHack2/releases">Github</a>
           <a href="">Rider</a>
           <a href="#">Blank 2</a>
-   
         </div>
       </div>
       <div class="dropdown">
@@ -216,6 +228,7 @@
   </main>
 
   <script>
+    // --- CLOCK LOGIC ---
     let is24Hour = true;
 
     function updateClock() {
@@ -250,6 +263,117 @@
 
     setInterval(updateClock, 1000);
     updateClock();
+
+
+    // --- PARTICLE ANIMATION LOGIC ---
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let particlesArray = [];
+
+    // Set canvas dimensions
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Track mouse position
+    let mouse = {
+      x: null,
+      y: null,
+      radius: 120 // How far the repulsion reaches
+    };
+
+    window.addEventListener('mousemove', function(event) {
+      mouse.x = event.x;
+      mouse.y = event.y;
+    });
+
+    // Handle resizing to keep canvas full screen
+    window.addEventListener('resize', function() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initParticles(); // Re-initialize to adjust density
+    });
+
+    // Particle Object
+    class Particle {
+      constructor(x, y, size, color, weight) {
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.color = color;
+        this.weight = weight; // Speed of falling
+      }
+
+      // Draw particle on canvas
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+
+      // Update particle position & handle repulsion
+      update() {
+        this.y += this.weight;
+        
+        // Slightly sway left/right as they fall
+        this.x += (Math.random() - 0.5) * 1; 
+
+        // Reset to top if they fall off the bottom
+        if (this.y > canvas.height) {
+          this.y = 0 - this.size;
+          this.x = Math.random() * canvas.width;
+          this.weight = (Math.random() * 2) + 0.5; // Reset speed
+        }
+
+        // --- MOUSE REPULSION LOGIC ---
+        let dx = mouse.x - this.x;
+        let dy = mouse.y - this.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < mouse.radius) {
+          // Calculate force pushing particle away
+          const forceDirectionX = dx / distance;
+          const forceDirectionY = dy / distance;
+          const force = (mouse.radius - distance) / mouse.radius;
+          
+          const directionX = forceDirectionX * force * 5; // Multiplier dictates speed of repulsion
+          const directionY = forceDirectionY * force * 5;
+
+          this.x -= directionX;
+          this.y -= directionY;
+        }
+      }
+    }
+
+    // Initialize the particle system
+    function initParticles() {
+      particlesArray = [];
+      const numberOfParticles = (canvas.height * canvas.width) / 9000; // Density
+      
+      for (let i = 0; i < numberOfParticles; i++) {
+        let size = (Math.random() * 3) + 1; // Size 1px to 4px
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * canvas.height;
+        let weight = (Math.random() * 2) + 0.5; // Falling speed
+        // Making them a semi-transparent blue to match your header
+        let color = 'rgba(30, 136, 229, 0.4)'; 
+        
+        particlesArray.push(new Particle(x, y, size, color, weight));
+      }
+    }
+
+    // Animation loop
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+        particlesArray[i].draw();
+      }
+      requestAnimationFrame(animateParticles);
+    }
+
+    initParticles();
+    animateParticles();
   </script>
 
 </body>
