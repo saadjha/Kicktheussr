@@ -21,8 +21,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: -1; /* Keeps it behind all your tools */
-      pointer-events: none; /* Ensures you can still click things on top of it */
+      z-index: -1; 
+      pointer-events: none; 
     }
 
     header {
@@ -286,29 +286,31 @@
       mouse.y = event.y;
     });
 
-    // Handle resizing to keep canvas full screen
     window.addEventListener('resize', function() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      initParticles(); // Re-initialize to adjust density
+      initParticles(); 
     });
+
+    // 1. Load the Favicon Image dynamically
+    const particleImage = new Image();
+    // This finds your <link rel="icon"> at the top of the file and uses its href
+    const faviconLink = document.querySelector('link[rel="icon"]');
+    particleImage.src = faviconLink ? faviconLink.href : 'favicon.svg'; 
 
     // Particle Object
     class Particle {
-      constructor(x, y, size, color, weight) {
+      constructor(x, y, size, weight) {
         this.x = x;
         this.y = y;
         this.size = size;
-        this.color = color;
         this.weight = weight; // Speed of falling
       }
 
-      // Draw particle on canvas
+      // Draw particle on canvas using the image
       draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        ctx.fillStyle = this.color;
-        ctx.fill();
+        // We draw the image centered on the particle's X/Y coordinates
+        ctx.drawImage(particleImage, this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
       }
 
       // Update particle position & handle repulsion
@@ -336,7 +338,7 @@
           const forceDirectionY = dy / distance;
           const force = (mouse.radius - distance) / mouse.radius;
           
-          const directionX = forceDirectionX * force * 5; // Multiplier dictates speed of repulsion
+          const directionX = forceDirectionX * force * 5; 
           const directionY = forceDirectionY * force * 5;
 
           this.x -= directionX;
@@ -348,17 +350,17 @@
     // Initialize the particle system
     function initParticles() {
       particlesArray = [];
-      const numberOfParticles = (canvas.height * canvas.width) / 9000; // Density
+      // I lowered the density number from 9000 to 12000 so the screen isn't overwhelmed with huge icons
+      const numberOfParticles = (canvas.height * canvas.width) / 12000; 
       
       for (let i = 0; i < numberOfParticles; i++) {
-        let size = (Math.random() * 3) + 1; // Size 1px to 4px
+        // Increased size so you can actually see the favicon (10px to 25px)
+        let size = (Math.random() * 15) + 10; 
         let x = Math.random() * canvas.width;
         let y = Math.random() * canvas.height;
-        let weight = (Math.random() * 2) + 0.5; // Falling speed
-        // Making them a semi-transparent blue to match your header
-        let color = 'rgba(30, 136, 229, 0.4)'; 
+        let weight = (Math.random() * 2) + 0.5; 
         
-        particlesArray.push(new Particle(x, y, size, color, weight));
+        particlesArray.push(new Particle(x, y, size, weight));
       }
     }
 
@@ -372,8 +374,11 @@
       requestAnimationFrame(animateParticles);
     }
 
-    initParticles();
-    animateParticles();
+    // Wait for the image to load before starting the animation so nothing blanks out
+    particleImage.onload = () => {
+        initParticles();
+        animateParticles();
+    };
   </script>
 
 </body>
